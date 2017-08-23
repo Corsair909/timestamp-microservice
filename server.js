@@ -32,20 +32,18 @@ function getTimestamp(data) {
     natural: null
   };
   
-  var date;
-  if (!isNaN(parseInt(data))) {
-    if(parseInt(data, 10) >= 0) {
-      result.unix = parseInt(data, 10);
-      result.natural = moment.unix(data).format("MMMM DD, YYYY")
-    } else {
-      return result;
-    }
-  } else if (moment(data, 'YYYY-MMMM-DD').isValid === true) {
-    result.unix = (moment(data).format('MMMM DD YYYY')). getTime();
-    result.natural = moment(data).format('MMMM DD YYYY');
+  if (+data >= 0) {
+    result.unix = +data;
+    result.natural = moment.unix(result.unix).format("MMMM D, YYYY");
+  } 
+   
+  else if (moment(data, "MMMM D, YYYY").isValid()) {
+    result.unix = moment(data, "MMMM D, YYYY").format("X");
+    result.natural = moment(data).format("MMMM D, YYYY");
   } else {
     return result;
   }
+  
   
   return result;
 };
